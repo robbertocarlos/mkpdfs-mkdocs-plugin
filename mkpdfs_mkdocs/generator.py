@@ -43,8 +43,6 @@ class Generator(object):
                 been found.'.format(css_file))
             self.design = css_file
         self.title = config['site_name']
-        self.config['copyright'] = 'CC-BY-SA\
-        ' if not config['copyright'] else config['copyright']
         self.mkdconfig = config
 
     def write(self):
