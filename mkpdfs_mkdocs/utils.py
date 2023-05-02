@@ -31,7 +31,7 @@ def modify_html_svg_download(html: str, href: str) -> str:
                      title='Download',
                      download=None
                      )
-    a['style'] = 'margin-left: 10px;'
+    a['style'] = 'margin-left: 10px; margin-top: 10px;'
     a['class'] = 'md-content__icon pdf-download-btn'
     i = soup.new_tag('i')
 
