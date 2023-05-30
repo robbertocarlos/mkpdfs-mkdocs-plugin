@@ -180,20 +180,21 @@ class Generator(object):
         start_dir = os.path.split(start)[0] if os.path.split(start)[0] else '.'
         return os.path.join(os.path.relpath(pdf_split[0], start_dir),
                             pdf_split[1])
-
     def _gen_toc_section(self, section):
-        if section.children:  # External Links do not have children
-            for p in section.children:
-                if p.is_page and p.meta and 'pdf' \
-                        in p.meta and not p.meta['pdf']:
-                    continue
-                if not hasattr(p, 'file'):
-                    # Skip external links
-                    continue
-                stoc = self._gen_toc_for_section(p.file.url, p)
-                child = self.html.new_tag('div')
-                child.append(stoc)
-                self._toc.append(child)
+        for p in section.children:
+            if p.is_page and p.meta != None and 'pdf' \
+                    in p.meta and p.meta['pdf'] == False:
+                continue
+            if p.is_section:
+                h3 = self.html.new_tag('h3')
+                h3.insert(0, p.title)
+                self._toc.append(h3)
+                self._gen_toc_section(p)
+                continue
+            stoc = self._gen_toc_for_section(p.file.url, p)
+            child = self.html.new_tag('div')
+            child.append(stoc)
+            self._toc.append(child)
 
     def _gen_children(self, url, children):
         ul = self.html.new_tag('ul')
