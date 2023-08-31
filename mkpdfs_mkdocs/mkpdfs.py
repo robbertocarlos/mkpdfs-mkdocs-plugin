@@ -56,15 +56,21 @@ class Mkpdfs(BasePlugin):
             return output_content
         try:
             abs_dest_path = page.file.abs_dest_path
+            self._logger.info("abs_dest_path = " + abs_dest_path)
             src_path = page.file.src_path
+            self._logger.info("src_path = " + src_path)
         except AttributeError:
             abs_dest_path = page.abs_output_path
             src_path = page.input_path
         path = os.path.dirname(abs_dest_path)
+        self._logger.info("path = " + path)
         os.makedirs(path, exist_ok=True)
         filename = os.path.splitext(os.path.basename(src_path))[0]
+        self._logger.info("filename = " + filename)
         base_url = urls.path2url(os.path.join(path, filename))
+        self._logger.info("base_url = " + base_url)
         pdf_url = self.generator.add_article(output_content, page, base_url)
+        self._logger.info("pdf_url = " + pdf_url)
         if self.config['pdf_links'] and pdf_url:
             output_content = modify_html_svg_download(output_content,pdf_url)
         return output_content
